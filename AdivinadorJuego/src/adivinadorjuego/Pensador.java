@@ -64,6 +64,28 @@ public class Pensador {
         }
     }
     
+    public String adivinarNumero(String intento) throws Exception {
+        validarNumero(intento);
+        
+        int bien = 0;
+        int regular = 0;
+        
+        for (int i = 0; i<4; i++) {
+            if (numero.charAt(i) == intento.charAt(i)) {
+                bien++;
+            } else {
+                for (int j = 0; j<4; j++) {
+                    if (i==j) continue;
+                    if (numero.charAt(i) == intento.charAt(j)) {
+                        regular++;
+                    }
+                }
+            }
+        }
+        
+        return bien+" bien, "+regular+" regular";
+    }
+    
     public String getNumero() {
         return numero;
     }
