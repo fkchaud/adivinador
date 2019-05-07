@@ -1,6 +1,7 @@
 package adivinadorjuego;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Pensador {
     
@@ -12,11 +13,28 @@ public class Pensador {
     }
 
     public Pensador() {
-        pensarNumero();
+        this.numero = pensarNumero();
     }
 
-    private void pensarNumero() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static String pensarNumero() {
+        char charArray[] = new char[4];
+        
+        // listo los caracteres disponibles
+        Character nums[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        // convierto Array a Lista
+        List<Character> numeros = Arrays.asList(nums);
+        
+        for (int i=0; i<4; i++) {
+            // Random entre 0 y 9. El máximo va bajando de a 1 a medida que elijo números
+            int indice = (int) (Math.random() * (10 - i));
+            // Pongo uno de los números en el array
+            charArray[i] = numeros.get(indice);
+            // Elimino el número que puse para no volverlo a elegir
+            numeros.remove(indice);
+        }
+        
+        // Devuelvo el Array como un String
+        return new String(charArray);
     }
     
     private static void validarNumero(String numero) throws Exception {
