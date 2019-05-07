@@ -1,7 +1,7 @@
 package adivinadorjuego;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Pensador {
     
@@ -19,10 +19,18 @@ public class Pensador {
     private static String pensarNumero() {
         char charArray[] = new char[4];
         
-        // listo los caracteres disponibles
-        Character nums[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        // convierto Array a Lista
-        List<Character> numeros = Arrays.asList(nums);
+        // listo los caracteres disponibles en un ArrayList
+        ArrayList<Character> numeros = new ArrayList<>();
+        numeros.add('0');
+        numeros.add('1');
+        numeros.add('2');
+        numeros.add('3');
+        numeros.add('4');
+        numeros.add('5');
+        numeros.add('6');
+        numeros.add('7');
+        numeros.add('8');
+        numeros.add('9');
         
         for (int i=0; i<4; i++) {
             // Random entre 0 y 9. El máximo va bajando de a 1 a medida que elijo números
