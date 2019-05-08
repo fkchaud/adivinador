@@ -1,5 +1,6 @@
 package adivinadorjuego;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Adivinador {
@@ -40,19 +41,29 @@ public class Adivinador {
         return new String(charArray);
     }
 
-    public boolean adivinar() {
-        // Realiza la busqueda propiamente dicha
-        // inicia pensando un numero y preguntando
-        /*
-            situacion A: 4 bien, respuesta correcta
-            situacion B: 0 bien y 0 regular, piensa otro numero
-                        eliminando los elegidos
-            situacion C: 4 numeros acertados, Bien o Regular.
-                        Se deben realizar permutaciones
-            situacion C: entre 1 y 3 numeros acertados, Bien o Regular.
-                        Se debe ir cambiando de a 1 digito
-        */
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean adivinar() throws IOException {
+        boolean rtaEncontrada;
+        
+        intento = pensarNumero();
+        System.out.println("¿El número es "+intento+"?");
+        System.out.println("Números bien:");
+        bien = Integer.parseInt(AdivinadorJuego.br.readLine());
+        System.out.println("Números regular:");
+        regular = Integer.parseInt(AdivinadorJuego.br.readLine());
+
+        if (bien == 4) {
+            rtaEncontrada = true;
+        } else if (bien+regular == 0) {
+            for (int i=0; i<4; i++) {
+                numeros.remove(intento.charAt(i));
+            }
+            rtaEncontrada = adivinar();
+        } else if (bien+regular == 4) {
+            rtaEncontrada = moverNumeros();
+        } else {
+            rtaEncontrada = cambiarUnNumero();
+        }
+        return rtaEncontrada;
     }
 
     private boolean moverNumeros() {
