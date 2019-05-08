@@ -24,8 +24,20 @@ public class Adivinador {
     }
 
     private String pensarNumero() {
-        // Elige un número inicial aleatorio de punto de partida
-        throw new UnsupportedOperationException("Not supported yet.");
+        char charArray[] = new char[4];
+        ArrayList<Character> num = (ArrayList) this.numeros.clone();
+        
+        for (int i=0; i<4; i++) {
+            // Random entre 0 y 9. El máximo va bajando de a 1 a medida que elijo números
+            int indice = (int) (Math.random() * (num.size()-1));
+            // Pongo uno de los números en el array
+            charArray[i] = num.get(indice);
+            // Elimino el número que puse para no volverlo a elegir
+            num.remove(indice);
+        }
+        
+        // Devuelvo el Array como un String
+        return new String(charArray);
     }
 
     public boolean adivinar() {
