@@ -34,7 +34,7 @@ public class Pensador {
         
         for (int i=0; i<4; i++) {
             // Random entre 0 y 9. El máximo va bajando de a 1 a medida que elijo números
-            int indice = (int) (Math.random() * (10 - i));
+            int indice = (int) (Math.random() * (numeros.size()-1));
             // Pongo uno de los números en el array
             charArray[i] = numeros.get(indice);
             // Elimino el número que puse para no volverlo a elegir

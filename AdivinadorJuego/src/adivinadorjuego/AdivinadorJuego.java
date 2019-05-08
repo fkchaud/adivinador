@@ -42,7 +42,10 @@ public class AdivinadorJuego {
             String str = br.readLine();
             try {
                 System.out.println(p.adivinarNumero(str));
-                if (p.adivinarNumero(str).equals("4 bien, 0 regular")) break;
+                if (p.adivinarNumero(str).equals("4 bien, 0 regular")) {
+                    System.out.println("Juego terminado!");
+                    break;
+                }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -50,7 +53,12 @@ public class AdivinadorJuego {
         }
     }
 
-    private static void parteDos() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private static void parteDos() throws IOException {
+        Adivinador a = new Adivinador();
+        if (a.adivinar()) {
+            System.out.println("Juego terminado!");
+        } else {
+            System.out.println("Algo falló. No se encontró tu número.");
+        }
     }
 }
