@@ -58,7 +58,7 @@ public class Adivinador {
             rtaEncontrada = true;
         } else if (bien+regular == 0) {
             for (int i=0; i<4; i++) {
-                numeros.remove(intento.charAt(i));
+                numeros.remove((Character) intento.charAt(i));
             }
             rtaEncontrada = adivinar();
         } else if (bien+regular == 4) {
