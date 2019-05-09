@@ -71,9 +71,43 @@ public class Adivinador {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private boolean cambiarUnNumero() {
-        // cambia un digito
-        throw new UnsupportedOperationException("Not supported yet.");
+    private boolean cambiarUnNumero() throws IOException {
+        char caracteres[];
+        String futuroIntento;
+        int bienN;
+        int regularN;
+        
+        for (int i=0; i<4; i++) {
+            for (int j=0; j < numeros.size(); j++) {
+                caracteres = intento.toCharArray();
+                if (!intento.contains(""+numeros.get(j))) {
+                    caracteres[i] = numeros.get(j);
+                    futuroIntento = new String(caracteres);
+                    
+                    System.out.println("¿El número es "+futuroIntento+"?");
+                    System.out.println("Números bien:");
+                    bienN = Integer.parseInt(AdivinadorJuego.br.readLine());
+                    System.out.println("Números regular:");
+                    regularN = Integer.parseInt(AdivinadorJuego.br.readLine());
+
+                    if ( (bienN+regularN) < (bien+regular) ) break;
+
+                    if ( (bienN+regularN) > (bien+regular) ) {
+                        intento = futuroIntento;
+                        bien = bienN;
+                        regular = regularN;
+                        break;
+                    }
+                }
+            }
+            if (bien == 4) {
+                return true;
+            } else if (bien+regular == 4) {
+                return moverNumeros();
+            }
+        }
+        
+        return cambiarUnNumero();
     }
 
     public String getIntento() {
