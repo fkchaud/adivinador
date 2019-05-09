@@ -2,6 +2,7 @@ package adivinadorjuego;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Adivinador {
     
@@ -10,6 +11,8 @@ public class Adivinador {
 
     private int bien = 0;
     private int regular = 0;
+
+    private int mejorPuntuacion = 0;
     
     public Adivinador() {
         numeros.add('0');
@@ -66,9 +69,62 @@ public class Adivinador {
         return rtaEncontrada;
     }
 
-    private boolean moverNumeros() {
-        // permuta digitos
-        throw new UnsupportedOperationException("Not supported yet.");
+    private boolean moverNumeros() throws IOException {
+        boolean rtaEncontrada;
+        
+        if ((2*bien + 1*regular)>mejorPuntuacion) {
+            mejorPuntuacion = 2*bien + 1*regular;
+        } 
+        
+        char caracteres[];
+        char charTemp;
+        String futuroIntento;
+        LinkedList<String> listaAbierta = new LinkedList<>();
+                
+        for (int i=0; i<3; i++) {
+            for (int j=0; j<4; j++) {
+                if (i!=j) {
+                    caracteres = intento.toCharArray();
+                    charTemp = caracteres[j];
+                    caracteres[j] = caracteres[i];
+                    caracteres[i] = charTemp;
+                    futuroIntento = new String(caracteres);
+                    
+                    if (!listaAbierta.contains(futuroIntento)) {
+                        listaAbierta.add(futuroIntento);
+                    }
+                }
+            }
+        }
+        
+        int bienN;
+        int regularN;
+        int puntuacionN;
+        
+        do {
+            //toma el primer item de la lista abierta y pregunta
+            futuroIntento = listaAbierta.pollFirst();
+            System.out.println("¿El número es "+futuroIntento+"?");
+            System.out.println("Números bien:");
+            bienN = Integer.parseInt(AdivinadorJuego.br.readLine());
+            System.out.println("Números regular:");
+            regularN = Integer.parseInt(AdivinadorJuego.br.readLine());
+            puntuacionN = 2*bienN + 1*regularN;
+        } while (puntuacionN <= mejorPuntuacion && !listaAbierta.isEmpty());
+        
+        if (bienN == 4) {
+            rtaEncontrada = true;
+        } else if (listaAbierta.isEmpty()) {
+            rtaEncontrada = false;
+        } else {
+            bien = bienN;
+            regular = regularN;
+            mejorPuntuacion = puntuacionN;
+            
+            rtaEncontrada = moverNumeros();
+        }
+        
+        return rtaEncontrada;
     }
 
     private boolean cambiarUnNumero() throws IOException {
