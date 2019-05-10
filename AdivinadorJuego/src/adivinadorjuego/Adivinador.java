@@ -12,8 +12,6 @@ public class Adivinador {
     private int bien = 0;
     private int regular = 0;
 
-    private int mejorPuntuacion = 0;
-    
     public Adivinador() {
         numeros.add('0');
         numeros.add('1');
@@ -70,61 +68,81 @@ public class Adivinador {
     }
 
     private boolean moverNumeros() throws IOException {
-        boolean rtaEncontrada;
         
-        if ((2*bien + 1*regular)>mejorPuntuacion) {
-            mejorPuntuacion = 2*bien + 1*regular;
-        } 
+        LinkedList<String> opciones = new LinkedList<>();
         
-        char caracteres[];
-        char charTemp;
-        String futuroIntento;
-        LinkedList<String> listaAbierta = new LinkedList<>();
-                
-        for (int i=0; i<3; i++) {
+        // genero todas las opciones
+        
+        // la inicial
+        opciones.add(intento);
+        
+        // las permutaciones
+        char caracteresIntento[] = intento.toCharArray();
+        String opcionArmada = "";
+        
+        for (int i=0; i<4; i++) {
+            opcionArmada += caracteresIntento[i];
             for (int j=0; j<4; j++) {
-                if (i!=j) {
-                    caracteres = intento.toCharArray();
-                    charTemp = caracteres[j];
-                    caracteres[j] = caracteres[i];
-                    caracteres[i] = charTemp;
-                    futuroIntento = new String(caracteres);
-                    
-                    if (!listaAbierta.contains(futuroIntento)) {
-                        listaAbierta.add(futuroIntento);
+                if (j==i) continue;
+                opcionArmada += caracteresIntento[j];
+                for (int k=0; k<4; k++) {
+                    if (k==i || k==j) continue;
+                    opcionArmada += caracteresIntento[k];
+                    for (int l=0; l<4; l++) {
+                        if (l==i || l==j || l==k) continue;
+                        opcionArmada += caracteresIntento[l];
+                        if (!opciones.contains(opcionArmada)) opciones.add(opcionArmada);
+                        opcionArmada = opcionArmada.substring(0, opcionArmada.length()-1);
                     }
+                    opcionArmada = opcionArmada.substring(0, opcionArmada.length()-1);
                 }
+                opcionArmada = opcionArmada.substring(0, opcionArmada.length()-1);
             }
+            opcionArmada = opcionArmada.substring(0, opcionArmada.length()-1);
         }
+        // fin de carga de permutaciones
         
+        // elimino "intento" porque ya se probó antes (pero era necesario para no
+        //duplicarla en las permutaciones)
+        opciones.remove(intento);
+        
+        // si el intento no tenia ningun caracter bien ubicado, se pueden eliminar
+        //todas las opciones que tienen un caracter en esa ubicacion
+        if (bien == 0) opciones = limpiarOpciones(opciones, intento);
+        
+        // pruebo todas las opciones, una por una, hasta que alguna de bien=4 o bien=0
+        String nuevoIntento;
         int bienN;
-        int regularN;
-        int puntuacionN;
-        
         do {
-            //toma el primer item de la lista abierta y pregunta
-            futuroIntento = listaAbierta.pollFirst();
-            System.out.println("¿El número es "+futuroIntento+"?");
+            nuevoIntento = opciones.pollFirst();
+            System.out.println("¿El número es "+nuevoIntento+"?");
             System.out.println("Números bien:");
             bienN = Integer.parseInt(AdivinadorJuego.br.readLine());
-            System.out.println("Números regular:");
-            regularN = Integer.parseInt(AdivinadorJuego.br.readLine());
-            puntuacionN = 2*bienN + 1*regularN;
-        } while (puntuacionN <= mejorPuntuacion && !listaAbierta.isEmpty());
+            
+            if (bienN == 0) {
+                opciones = limpiarOpciones(opciones, nuevoIntento);
+            }
+        } while (bienN != 4);
         
         if (bienN == 4) {
-            rtaEncontrada = true;
-        } else if (listaAbierta.isEmpty()) {
-            rtaEncontrada = false;
-        } else {
-            bien = bienN;
-            regular = regularN;
-            mejorPuntuacion = puntuacionN;
-            
-            rtaEncontrada = moverNumeros();
+            intento = nuevoIntento;
+            return true;
         }
         
-        return rtaEncontrada;
+        return false;
+    }
+    
+    private LinkedList<String> limpiarOpciones(LinkedList<String> opciones, String nuevoIntento) {
+        LinkedList<String> opciones2 = new LinkedList<>();
+        
+        for (String opcion : opciones) {
+            if (opcion.charAt(0) != nuevoIntento.charAt(0) && 
+                opcion.charAt(1) != nuevoIntento.charAt(1) &&
+                opcion.charAt(2) != nuevoIntento.charAt(2) &&
+                opcion.charAt(3) != nuevoIntento.charAt(3)) 
+                    opciones2.add(opcion);
+        }
+        return opciones2;
     }
 
     private boolean cambiarUnNumero() throws IOException {
