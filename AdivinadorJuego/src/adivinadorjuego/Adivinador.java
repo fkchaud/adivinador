@@ -3,13 +3,11 @@ package adivinadorjuego;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 public class Adivinador {
     
     private ArrayList<Character> numeros = new ArrayList<>();
     private ArrayList<Intento> intentos = new ArrayList<>();
-    private String respuesta = "";
 
     public Adivinador() {
         numeros.add('0');
@@ -50,11 +48,20 @@ public class Adivinador {
         intento = pensarNumero();
         System.out.println("¿El número es "+intento+"?");
         System.out.println("Números bien:");
-        bien = Integer.parseInt(AdivinadorJuego.br.readLine());
+        while (!AdivinadorJuego.in.hasNextInt(5) || !AdivinadorJuego.in.hasNext("\\d")) {
+            System.out.println("Ingrese un número de 0 a 5:");
+            AdivinadorJuego.in.next();
+        }
+        bien = AdivinadorJuego.in.nextInt();
         System.out.println("Números regular:");
-        regular = Integer.parseInt(AdivinadorJuego.br.readLine());
+        while (!AdivinadorJuego.in.hasNextInt(5) || !AdivinadorJuego.in.hasNext("\\d")) {
+            System.out.println("Ingrese un número de 0 a 5:");
+            AdivinadorJuego.in.next();
+        }
+        regular = AdivinadorJuego.in.nextInt();
 
         if (bien == 4) {
+            System.out.println("La respuesta es "+intento);
             return true;
         } else {
             intentos.add(new Intento(intento,bien,regular));
@@ -96,11 +103,20 @@ public class Adivinador {
                 if (coincide) {
                     System.out.println("¿El número es "+intentoStr+"?");
                     System.out.println("Números bien:");
-                    int bien = Integer.parseInt(AdivinadorJuego.br.readLine());
+                    while (!AdivinadorJuego.in.hasNextInt(5) || !AdivinadorJuego.in.hasNext("\\d")) {
+                        System.out.println("Ingrese un número de 0 a 5:");
+                        AdivinadorJuego.in.next();
+                    }
+                    int bien = AdivinadorJuego.in.nextInt();
                     System.out.println("Números regular:");
-                    int regular = Integer.parseInt(AdivinadorJuego.br.readLine());
+                    while (!AdivinadorJuego.in.hasNextInt(5) || !AdivinadorJuego.in.hasNext("\\d")) {
+                        System.out.println("Ingrese un número de 0 a 5:");
+                        AdivinadorJuego.in.next();
+                    }
+                    int regular = AdivinadorJuego.in.nextInt();
 
                     if (bien == 4) {
+                        System.out.println("La respuesta es "+intento);
                         return true;
                     } else {
                         intentos.add(new Intento (intentoStr, bien, regular));
@@ -147,9 +163,5 @@ public class Adivinador {
             }
         }
         return new Intento(intentoNuevo, bien, regular);
-    }
-
-    public String getRespuesta() {
-        return respuesta;
     }
 }

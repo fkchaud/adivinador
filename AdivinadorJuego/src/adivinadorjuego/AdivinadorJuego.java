@@ -3,10 +3,11 @@ package adivinadorjuego;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class AdivinadorJuego {
     
-    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static Scanner in = new Scanner(System.in);
 
     /**
      * @param args the command line arguments
@@ -19,7 +20,7 @@ public class AdivinadorJuego {
         System.out.println("Ingrese 1 o 2");
         boolean valido = false;
         do {
-            String str = br.readLine();
+            String str = in.next();
             if (str.equals("1")) {
                 valido = true;
                 System.out.println("");
@@ -39,7 +40,7 @@ public class AdivinadorJuego {
         while(true) {
             //System.out.println("Pensador piensa en: "+p.getNumero());
             System.out.println("Ingrese un numero de 4 digitos distintos:");
-            String str = br.readLine();
+            String str = in.next();
             try {
                 System.out.println(p.adivinarNumero(str));
                 if (p.adivinarNumero(str).equals("4 bien, 0 regular")) {
