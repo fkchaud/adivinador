@@ -3,19 +3,28 @@ package adivinadorjuego;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ *
+ * @author GoldenImper
+ */
 public class Pensador {
     
+    // El número pensado
     private String numero;
 
-    public Pensador(String numero) throws Exception {
-        validarNumero(numero);
-        this.numero = numero;
-    }
-
+    /** 
+     * Constructor de la instancia, piensa un número.
+     * Llama al método {@link Pensador#pensarNumero()} para pensar el número.
+     */
     public Pensador() {
         this.numero = pensarNumero();
     }
 
+    /**
+     * Elige un número.
+     * Este número es el que se utilizará en el juego.
+     * @return número pensado
+     */
     private static String pensarNumero() {
         char charArray[] = new char[4];
         
@@ -45,6 +54,11 @@ public class Pensador {
         return new String(charArray);
     }
     
+    /**
+     * Verifica que el número tenga 4 dígitos sin duplicar.
+     * @param numero el número a analizar
+     * @throws Exception si no son 4 dígitos o si están duplicados
+     */
     private static void validarNumero(String numero) throws Exception {
         // Todos los caracteres son numeros y si son 4 caracteres
         if (numero.matches("\\d\\d\\d\\d")) {
@@ -64,6 +78,15 @@ public class Pensador {
         }
     }
     
+    /**
+     * Compara el intento del jugador con el número pensado.
+     * Verifica caracter por caracter para determinar la cantidad de dígitos
+     * bien (que están bien ubicados) y regulares (que están mal ubicados pero
+     * pertenecen al número pensado)
+     * @param intento el número que adivinó el jugador
+     * @return cadena indicando cuántos dígitos están bien y regular
+     * @throws Exception si el número es inválido
+     */
     public String adivinarNumero(String intento) throws Exception {
         validarNumero(intento);
         
@@ -71,27 +94,33 @@ public class Pensador {
         int regular = 0;
         
         for (int i = 0; i<4; i++) {
+            // Si el caracter está en su lugar, suma 1 bien
             if (numero.charAt(i) == intento.charAt(i)) {
                 bien++;
             } else {
                 for (int j = 0; j<4; j++) {
+                    // No compara respecto al caracter de su mismo índice, ya
+                    //que se contó en los "bien"
                     if (i==j) continue;
+                    // Si el caracter está en uno de los otros dígitos,
+                    //suma 1 regular
                     if (numero.charAt(i) == intento.charAt(j)) {
                         regular++;
                     }
                 }
             }
         }
-        
+        // Devuelve una cadena (que se mostrará por consola) que muestra la
+        //cantidad de dígitos bien y regular
         return bien+" bien, "+regular+" regular";
     }
     
+    /**
+     * Devuelve el número pensado.
+     * @return número pensado
+     */
     public String getNumero() {
         return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
     }
     
 }

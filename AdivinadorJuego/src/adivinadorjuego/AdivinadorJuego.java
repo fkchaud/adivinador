@@ -36,17 +36,23 @@ public class AdivinadorJuego {
     }
     
     public static void parteUno() throws IOException {
+        // Se instancia un objeto Pensador, que piensa un número
         Pensador p = new Pensador();
+        
+        // Se pregunta infinitas veces hasta que el jugador descubra el número correcto
         while(true) {
-            //System.out.println("Pensador piensa en: "+p.getNumero());
             System.out.println("Ingrese un numero de 4 digitos distintos:");
+            // La validación se hace dentro de p.adivinarNumero(str)
             String str = in.next();
             try {
+                // Muestra el resultado del intento
                 System.out.println(p.adivinarNumero(str));
+                // Si acertó 4, se termina el juego
                 if (p.adivinarNumero(str).equals("4 bien, 0 regular")) {
                     System.out.println("Juego terminado!");
                     break;
                 }
+                // Si no acertó 4, sigue jugando
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -55,7 +61,9 @@ public class AdivinadorJuego {
     }
 
     private static void parteDos() throws IOException {
+        // Se instancia el Adivinador
         Adivinador a = new Adivinador();
+        // Inicia el proceso de adivinación
         if (a.adivinar()) {
             System.out.println("Juego terminado!");
         } else {
