@@ -6,37 +6,26 @@ import java.util.Arrays;
 
 public class Adivinador {
     
-    private ArrayList<Character> numeros = new ArrayList<>();
     private ArrayList<Intento> intentos = new ArrayList<>();
 
     public Adivinador() {
-        numeros.add('0');
-        numeros.add('1');
-        numeros.add('2');
-        numeros.add('3');
-        numeros.add('4');
-        numeros.add('5');
-        numeros.add('6');
-        numeros.add('7');
-        numeros.add('8');
-        numeros.add('9');
     }
 
     private String pensarNumero() {
-        char charArray[] = new char[4];
-        ArrayList<Character> num = (ArrayList) this.numeros.clone();
+        int numero;
+        String str = "";
+        boolean valido = false;
         
-        for (int i=0; i<4; i++) {
-            // Random entre 0 y 9. El máximo va bajando de a 1 a medida que elijo números
-            int indice = (int) (Math.random() * (num.size()-1));
-            // Pongo uno de los números en el array
-            charArray[i] = num.get(indice);
-            // Elimino el número que puse para no volverlo a elegir
-            num.remove(indice);
-        }
+        while (!valido) {
+            numero = (int) (Math.random() * 9877);
+            if (numero < 10) str = "000"+numero;
+            else if (numero < 100) str = "00"+numero;
+            else if (numero < 1000) str = "0"+numero;
+            else str = ""+numero;
+            valido = esValido(str);
+        }   
         
-        // Devuelvo el Array como un String
-        return new String(charArray);
+        return str;
     }
 
     public boolean adivinar() throws IOException {
@@ -65,13 +54,13 @@ public class Adivinador {
             return true;
         } else {
             intentos.add(new Intento(intento,bien,regular));
-            return buscarCoincidencia(intento);
+            return buscarCoincidencia();
         }
     }
     
-    public boolean buscarCoincidencia(String intento) throws IOException {
-        int intentoNum = Integer.parseInt(intento);
-        String intentoStr;
+    public boolean buscarCoincidencia() throws IOException {
+        String intentoStr = intentos.get(0).getNumero();
+        int intentoNum = Integer.parseInt(intentoStr);
         Intento intentoNuevo;
         boolean rtaEncontrada = false;
         
@@ -116,7 +105,7 @@ public class Adivinador {
                     int regular = AdivinadorJuego.in.nextInt();
 
                     if (bien == 4) {
-                        System.out.println("La respuesta es "+intento);
+                        System.out.println("La respuesta es "+intentoStr);
                         return true;
                     } else {
                         intentos.add(new Intento (intentoStr, bien, regular));
